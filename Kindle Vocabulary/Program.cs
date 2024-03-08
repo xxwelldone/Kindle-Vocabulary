@@ -50,20 +50,19 @@ namespace Kindle_Vocabulary
 
             }
 
-            List<string> wordsTreated = words.ConvertAll( v=> v.EndsWith('?') || v.EndsWith('.')|| v.EndsWith(',')|| v.EndsWith(':') ? v.Remove(v.Length-1): v);
-            wordsTreated.RemoveAll(word => word.Contains(' '));
+            List<string> wordsTreated = words.ConvertAll(v => v.EndsWith('\'') || v.EndsWith('?') || v.EndsWith('.') || v.EndsWith(',') || v.EndsWith(':') ? v.Remove(v.Length - 1) : v);
+            //wordsTreated.RemoveAll(word => word.Contains(' '));
             for (int i = 0; i < wordsTreated.Count; i++)
             {
-
-
                 vocabulary.Add(new Vocabulary(wordsTreated[i], book[i], addedOn[i]));
-                Console.WriteLine(vocabulary[i]);
-
+                //Console.WriteLine(vocabulary[i]);
             }
-            
+           
+            vocabulary.RemoveAll((v) => v.Word.Contains(' '));
+            vocabulary.Sort((v1, v2) => v1.AddedOn.CompareTo(v2.AddedOn));
+            vocabulary.ForEach(v => { Console.WriteLine(v); });
 
-           // vocabulary.ForEach(word => { Console.WriteLine(word); });
-
+            vocabulary.ForEach(word => { Console.WriteLine(word); });
 
             List<String> lines = vocabulary.ConvertAll(vocab => vocab.ToString());
             File.WriteAllLines(outpath, lines);
